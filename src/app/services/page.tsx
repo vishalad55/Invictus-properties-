@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { JsonLd } from "@/components/JsonLd";
@@ -7,12 +8,12 @@ import { Container, Section } from "@/components/Section";
 import { breadcrumbSchema } from "@/lib/schema";
 import { services } from "@/lib/services";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Services",
   description:
     "Brand strategy, performance marketing, content, search and AI visibility, PR, NRI marketing, sales enablement and reporting for real estate developers in Hyderabad and Bangalore.",
-  alternates: { canonical: "/services" },
-};
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (

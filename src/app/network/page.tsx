@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { JsonLd } from "@/components/JsonLd";
 import { NetworkForm } from "@/components/NetworkForm";
 import { Reveal } from "@/components/Reveal";
@@ -6,12 +7,12 @@ import { Container, Section } from "@/components/Section";
 import { breadcrumbSchema } from "@/lib/schema";
 import { rera } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Network",
   description:
     "Channel partners, investors and vendors working with Invictus Properties in Hyderabad and Bangalore. Tell us your role and city.",
-  alternates: { canonical: "/network" },
-};
+  path: "/network",
+});
 
 const roles = [
   {

@@ -7,6 +7,7 @@ import { ImageSlot, Placeholder } from "@/components/Placeholder";
 import { Reveal } from "@/components/Reveal";
 import { Container, Section } from "@/components/Section";
 import { caseStudies, getCaseStudy, isVisible, type CaseStudy } from "@/lib/case-studies";
+import { pageMetadata } from "@/lib/metadata";
 import { breadcrumbSchema } from "@/lib/schema";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -19,15 +20,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const cs = getCaseStudy(slug);
   if (!cs) return {};
-  const indexable = cs.status === "live";
-  return {
+  return pageMetadata({
     title: cs.project,
     description: cs.summary,
-    alternates: { canonical: `/work/${cs.slug}` },
+    path: `/work/${cs.slug}`,
     // A draft or restricted study must never be indexed, even if someone
     // reaches the URL directly.
-    robots: indexable ? undefined : { index: false, follow: false },
-  };
+    noindex: cs.status !== "live",
+  });
 }
 
 /** One of the five template sections. */

@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { setConsent, useConsent } from "@/lib/consent";
 import { analytics } from "@/lib/site";
-import { readConsent, writeConsent } from "./Analytics";
 
 /**
  * Consent banner.
@@ -14,20 +13,11 @@ import { readConsent, writeConsent } from "./Analytics";
  * is not legal advice and has not been reviewed by a lawyer.
  */
 export function CookieBanner() {
-  const [visible, setVisible] = useState(false);
+  const consent = useConsent();
 
-  useEffect(() => {
-    // Nothing to ask about if no analytics IDs are configured.
-    if (!analytics.ga4 && !analytics.metaPixel) return;
-    if (readConsent() === null) setVisible(true);
-  }, []);
-
-  if (!visible) return null;
-
-  const decide = (value: "granted" | "denied") => {
-    writeConsent(value);
-    setVisible(false);
-  };
+  // Nothing to ask about if no analytics IDs are configured.
+  const hasTrackers = Boolean(analytics.ga4 || analytics.metaPixel);
+  if (!hasTrackers || consent !== "unset") return null;
 
   return (
     <div
@@ -49,14 +39,14 @@ export function CookieBanner() {
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
         <button
           type="button"
-          onClick={() => decide("granted")}
+          onClick={() => setConsent("granted")}
           className="min-h-12 flex-1 bg-accent px-5 text-sm font-semibold uppercase tracking-[0.12em] text-carbon"
         >
           Accept
         </button>
         <button
           type="button"
-          onClick={() => decide("denied")}
+          onClick={() => setConsent("denied")}
           className="min-h-12 flex-1 border border-paper-muted px-5 text-sm font-semibold uppercase tracking-[0.12em]"
         >
           Decline

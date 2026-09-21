@@ -1,48 +1,15 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useConsent } from "@/lib/consent";
 import { analytics } from "@/lib/site";
 
-export const CONSENT_KEY = "invictus.consent.v1";
-export const CONSENT_EVENT = "invictus:consent";
-
-export type ConsentValue = "granted" | "denied";
-
-export function readConsent(): ConsentValue | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const v = window.localStorage.getItem(CONSENT_KEY);
-    return v === "granted" || v === "denied" ? v : null;
-  } catch {
-    return null;
-  }
-}
-
-export function writeConsent(value: ConsentValue) {
-  try {
-    window.localStorage.setItem(CONSENT_KEY, value);
-  } catch {
-    // Storage blocked. Consent then lasts for this page view only, which is the
-    // safe direction: we ask again rather than assuming a grant.
-  }
-  window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
-}
-
 /**
- * GA4 and Meta Pixel load only after the visitor has actively granted consent.
- * Nothing is requested, and no identifier is set, before that click.
+ * GA4 and the Meta Pixel load only after the visitor has actively granted
+ * consent. Nothing is requested, and no identifier is set, before that click.
  */
 export function Analytics() {
-  const [consent, setConsent] = useState<ConsentValue | null>(null);
-
-  useEffect(() => {
-    setConsent(readConsent());
-    const onChange = (e: Event) => setConsent((e as CustomEvent<ConsentValue>).detail);
-    window.addEventListener(CONSENT_EVENT, onChange);
-    return () => window.removeEventListener(CONSENT_EVENT, onChange);
-  }, []);
-
+  const consent = useConsent();
   if (consent !== "granted") return null;
 
   return (

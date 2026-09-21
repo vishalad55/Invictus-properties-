@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { DiscoveryCallForm } from "@/components/DiscoveryCallForm";
 import { JsonLd } from "@/components/JsonLd";
 import { Placeholder } from "@/components/Placeholder";
@@ -7,12 +8,12 @@ import { Container, Section } from "@/components/Section";
 import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { contact, site, whatsappLink } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Book a discovery call",
   description:
     "Book a 30-minute discovery call with Invictus Properties. Bring your current campaign numbers and we will tell you what we would change first.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 const faqs = [
   {

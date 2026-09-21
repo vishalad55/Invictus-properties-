@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { Placeholder } from "@/components/Placeholder";
@@ -7,12 +8,12 @@ import { Container, Section } from "@/components/Section";
 import { listInsights } from "@/lib/insights";
 import { breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Insights",
   description:
     "Land zones, Government Orders, patta and ancestral land history, ORR and Regional Ring Road exits, legal verification and registration, explained for buyers and developers.",
-  alternates: { canonical: "/insights" },
-};
+  path: "/insights",
+});
 
 export default function InsightsPage() {
   const articles = listInsights();

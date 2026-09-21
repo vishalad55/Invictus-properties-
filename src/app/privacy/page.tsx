@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { Placeholder } from "@/components/Placeholder";
 import { Container, Section } from "@/components/Section";
 import { contact, site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy policy",
   description:
     "How Invictus Properties handles the personal data submitted through this website.",
-  alternates: { canonical: "/privacy" },
-  robots: { index: true, follow: true },
-};
+  path: "/privacy",
+});
 
 /**
  * {{CONFIRM}} THE WHOLE OF THIS PAGE WITH OUR OWN LEGAL ADVISER.
@@ -21,7 +21,10 @@ export const metadata: Metadata = {
  * below are supplied.
  */
 export default function PrivacyPage() {
-  const updated = "{{CONFIRM}} date of last review";
+  /* Set NEXT_PUBLIC_PRIVACY_UPDATED once this text has been reviewed by our
+     adviser. Until then the page states plainly that it is not final rather
+     than showing a review date we cannot stand behind. */
+  const reviewed = process.env.NEXT_PUBLIC_PRIVACY_UPDATED ?? "";
 
   return (
     <>
@@ -29,7 +32,9 @@ export default function PrivacyPage() {
         <Container width="narrow">
           <p className="eyebrow text-accent">Legal</p>
           <h1 className="display mt-6 text-[clamp(2.25rem,7vw,3.75rem)]">Privacy policy</h1>
-          <p className="copy mt-6 text-paper-muted">Last reviewed: {updated}</p>
+          <p className="copy mt-6 text-paper-muted">
+            {reviewed ? `Last reviewed: ${reviewed}` : "Draft. Not yet reviewed by our legal adviser."}
+          </p>
         </Container>
       </section>
 
@@ -82,10 +87,11 @@ export default function PrivacyPage() {
           </p>
 
           <h2>How long we keep it</h2>
-          <p>
-            {"{{CONFIRM}}"} state the actual retention period we will honour, and confirm it is
-            one we can operationally meet. Do not publish a period we do not follow.
-          </p>
+          <Placeholder label="Retention period not confirmed">
+            {"{{CONFIRM}}"} the actual retention period we will honour, and confirm it is one we
+            can operationally meet. Do not publish a period we do not follow. This block is
+            hidden in production until the period is set, so no unkept promise is published.
+          </Placeholder>
 
           <h2>Analytics and cookies</h2>
           <p>

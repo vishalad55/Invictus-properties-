@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { JsonLd } from "@/components/JsonLd";
@@ -8,12 +9,12 @@ import { Container, Section } from "@/components/Section";
 import { caseStudies, isVisible } from "@/lib/case-studies";
 import { breadcrumbSchema } from "@/lib/schema";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Work",
   description:
     "Case studies from Invictus Properties. Context, problem, what we did, what changed, what we learned. Figures appear only with client approval.",
-  alternates: { canonical: "/work" },
-};
+  path: "/work",
+});
 
 export default function WorkPage() {
   const shown = caseStudies.filter(isVisible);

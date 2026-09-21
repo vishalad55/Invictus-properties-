@@ -6,6 +6,7 @@ import { Faq } from "@/components/Faq";
 import { JsonLd } from "@/components/JsonLd";
 import { Reveal } from "@/components/Reveal";
 import { Container, Section } from "@/components/Section";
+import { pageMetadata } from "@/lib/metadata";
 import { breadcrumbSchema, faqSchema, serviceSchema } from "@/lib/schema";
 import { getService, services } from "@/lib/services";
 
@@ -19,16 +20,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = getService(slug);
   if (!service) return {};
-  return {
+  return pageMetadata({
     title: service.title,
     description: service.answer,
-    alternates: { canonical: `/services/${service.slug}` },
-    openGraph: {
-      title: `${service.title} — Invictus Properties`,
-      description: service.answer,
-      url: `/services/${service.slug}`,
-    },
-  };
+    path: `/services/${service.slug}`,
+  });
 }
 
 export default async function ServicePage({ params }: Props) {

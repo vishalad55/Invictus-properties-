@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { Button } from "@/components/Button";
 import { JsonLd } from "@/components/JsonLd";
 import { Placeholder } from "@/components/Placeholder";
@@ -7,12 +8,12 @@ import { Container, Section } from "@/components/Section";
 import { breadcrumbSchema } from "@/lib/schema";
 import { flags, site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
     "Invictus Premium Properties is a real estate branding and growth agency based in Khanamet, Hyderabad, working with developers in Hyderabad and Bangalore.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 const beliefs = [
   {

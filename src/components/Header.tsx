@@ -8,11 +8,10 @@ import { Logo } from "./Logo";
 
 export function Header() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  // The menu is remembered against the route it was opened on, so navigating
+  // closes it without an effect that fires on every render.
+  const [openedOn, setOpenedOn] = useState<string | null>(null);
+  const open = openedOn === pathname;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -60,7 +59,7 @@ export function Header() {
 
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpenedOn(open ? null : pathname)}
           aria-expanded={open}
           aria-controls="mobile-nav"
           className="-mr-2 flex h-11 w-11 items-center justify-center lg:hidden"

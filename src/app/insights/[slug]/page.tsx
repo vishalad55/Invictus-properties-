@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Reveal } from "@/components/Reveal";
 import { Container, Section } from "@/components/Section";
 import { allInsightSlugs, getInsight, listInsights } from "@/lib/insights";
+import { pageMetadata } from "@/lib/metadata";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -20,20 +21,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = getInsight(slug);
   if (!article) return {};
-  return {
+  return pageMetadata({
     title: article.title,
     description: article.description,
-    alternates: { canonical: `/insights/${article.slug}` },
+    path: `/insights/${article.slug}`,
+    type: "article",
+    publishedTime: article.date || undefined,
     // A draft is never indexed, whatever route it is reached by.
-    robots: article.draft ? { index: false, follow: false } : undefined,
-    openGraph: {
-      type: "article",
-      title: article.title,
-      description: article.description,
-      url: `/insights/${article.slug}`,
-      publishedTime: article.date || undefined,
-    },
-  };
+    noindex: article.draft,
+  });
 }
 
 /**
