@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/Button";
-import { ImageSlot, Placeholder } from "@/components/Placeholder";
+import { ImageSlot } from "@/components/ImageSlot";
+import { Placeholder } from "@/components/Placeholder";
 import { Reveal } from "@/components/Reveal";
 import { Container, Section, SectionHead } from "@/components/Section";
 import { caseStudies, featuredSlugs, isVisible } from "@/lib/case-studies";
@@ -188,6 +189,7 @@ export default function HomePage() {
                     src={cs.hero.src}
                     alt={cs.hero.alt}
                     className="aspect-[4/5] w-full"
+                    sizes="(min-width: 768px) 33vw, 100vw"
                   />
                   <p className="eyebrow mt-5 text-ink-muted">{cs.location}</p>
                   <h3 className="display mt-2 text-xl group-hover:text-accent-strong">

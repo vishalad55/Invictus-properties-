@@ -3,7 +3,8 @@ import { pageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { JsonLd } from "@/components/JsonLd";
-import { ImageSlot, Placeholder } from "@/components/Placeholder";
+import { ImageSlot } from "@/components/ImageSlot";
+import { Placeholder } from "@/components/Placeholder";
 import { Reveal } from "@/components/Reveal";
 import { Container, Section } from "@/components/Section";
 import { caseStudies, isVisible } from "@/lib/case-studies";
@@ -58,7 +59,12 @@ export default function WorkPage() {
             {shown.map((cs, i) => (
               <Reveal key={cs.slug} delay={i * 70}>
                 <Link href={`/work/${cs.slug}`} className="group block">
-                  <ImageSlot src={cs.hero.src} alt={cs.hero.alt} className="aspect-[3/2] w-full" />
+                  <ImageSlot
+                    src={cs.hero.src}
+                    alt={cs.hero.alt}
+                    className="aspect-[3/2] w-full"
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                  />
                   <div className="mt-6">
                     <p className="eyebrow text-ink-muted">
                       {cs.location} · {cs.sector}
