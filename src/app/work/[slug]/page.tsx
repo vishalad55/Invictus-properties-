@@ -103,11 +103,7 @@ export default async function CaseStudyPage({ params }: Props) {
       />
 
       <section className="relative isolate flex min-h-[70svh] items-end overflow-hidden bg-carbon text-paper">
-        <ImageSlot
-          src={cs.hero.src}
-          alt={cs.hero.alt}
-          className="absolute inset-0 -z-10 h-full w-full"
-        />
+        <ImageSlot src={cs.hero.src} alt={cs.hero.alt} fill />
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,var(--carbon)_12%,rgba(11,12,16,0.7)_60%,rgba(11,12,16,0.45))]"

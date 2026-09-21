@@ -54,11 +54,24 @@ export default function InsightsPage() {
 
       <Section tone="light">
         {articles.length === 0 ? (
-          <Placeholder label="No Insights article has cleared its verification checks yet.">
-            All three starter articles are drafts. They are visible in development and hidden
-            in production until every {"{{VERIFY}}"} marker has been checked against a source
-            document.
-          </Placeholder>
+          <>
+            {/* Honest empty state rather than a blank page. */}
+            <Reveal className="max-w-2xl">
+              <h2 className="display text-[clamp(1.5rem,4vw,2.25rem)]">
+                The first articles are being checked
+              </h2>
+              <p className="copy prose-measure mt-6 text-ink-muted">
+                These pieces cover land classification, patta and ancestral land history, and
+                reading a RERA registration. Every specific in them is checked against a source
+                document before we publish, because a wrong detail here costs a reader money.
+              </p>
+            </Reveal>
+            <Placeholder label="No Insights article has cleared its verification checks yet.">
+              All three starter articles are drafts. They are visible in development and hidden
+              in production until every {"{{VERIFY}}"} marker has been checked against a source
+              document.
+            </Placeholder>
+          </>
         ) : (
           <ol className="divide-y divide-offwhite-line">
             {articles.map((a, i) => (

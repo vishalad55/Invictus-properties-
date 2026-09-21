@@ -18,6 +18,7 @@ export function ImageSlot({
   className = "",
   priority = false,
   sizes = "100vw",
+  fill = false,
 }: {
   src: string;
   alt: string;
@@ -25,13 +26,23 @@ export function ImageSlot({
   /** Set on the one above-the-fold image per page, and nowhere else. */
   priority?: boolean;
   sizes?: string;
+  /**
+   * Cover the nearest positioned ancestor, for full-bleed hero backgrounds.
+   *
+   * The positioning has to be decided here rather than passed in through
+   * className: two Tailwind position utilities on one element are resolved by
+   * stylesheet order, not by the order they are written, so a caller asking for
+   * `absolute` cannot reliably beat a `relative` set on the same element.
+   */
+  fill?: boolean;
 }) {
   const exists = fileExists(src);
   const isDev = process.env.NODE_ENV !== "production";
+  const position = fill ? "absolute inset-0 -z-10 h-full w-full" : "relative";
 
   if (exists) {
     return (
-      <div className={`relative overflow-hidden bg-carbon-raised ${className}`}>
+      <div className={`${position} overflow-hidden bg-carbon-raised ${className}`}>
         <Image
           src={src}
           alt={alt}
@@ -46,7 +57,7 @@ export function ImageSlot({
   }
 
   return (
-    <div className={`relative overflow-hidden bg-carbon-raised ${className}`}>
+    <div className={`${position} overflow-hidden bg-carbon-raised ${className}`}>
       {isDev ? (
         <div className="absolute inset-0 grid place-items-center p-6 text-center">
           <div className="max-w-md">

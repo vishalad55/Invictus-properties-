@@ -50,10 +50,27 @@ export default function WorkPage() {
 
       <Section tone="light">
         {shown.length === 0 ? (
-          <Placeholder label="No case study is cleared for display in this environment.">
-            Supply client data for Allure Avani and Urban Greens, and written approval plus
-            SHOW_SHANGRILA=true for Shangrila Infracon.
-          </Placeholder>
+          <>
+            {/* Honest empty state. Shown to a visitor when nothing is cleared
+                for publication, so the page never reads as broken. */}
+            <Reveal className="max-w-2xl">
+              <h2 className="display text-[clamp(1.5rem,4vw,2.25rem)]">
+                Nothing published here yet
+              </h2>
+              <p className="copy prose-measure mt-6 text-ink-muted">
+                We publish a case study once the client has approved the figures in it, and not
+                before. Until then, ask us on a call and we will take you through the work and
+                the numbers directly.
+              </p>
+              <div className="mt-8">
+                <Button href="/contact">Book a discovery call</Button>
+              </div>
+            </Reveal>
+            <Placeholder label="No case study is cleared for display in this environment.">
+              Supply client data for Allure Avani and Urban Greens, and written approval plus
+              SHOW_SHANGRILA=true for Shangrila Infracon.
+            </Placeholder>
+          </>
         ) : (
           <div className="grid gap-12 md:grid-cols-2">
             {shown.map((cs, i) => (

@@ -186,7 +186,7 @@ not legal advice; keep that.
 - [ ] Submit both forms end to end on the preview deploy and confirm the
       notification email arrives.
 - [ ] Re-run Lighthouse once real photography is in. Current mobile scores on a
-      production build are 98–100 across performance, accessibility, best
+      production build are 96–100 across performance, accessibility, best
       practices and SEO, measured without images.
 - [ ] Submit `sitemap.xml` in Google Search Console and confirm `/llms.txt`
       resolves on the live domain.

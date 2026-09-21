@@ -70,6 +70,14 @@ export default function HomePage() {
 
   const insights = listInsights().slice(0, 3);
 
+  /* A section with a heading and nothing under it reads as a broken page. In
+     production, where drafts and unapproved figures are hidden, these two
+     sections are dropped entirely rather than left standing empty. They still
+     render in development so the placeholders are visible during review. */
+  const isDev = process.env.NODE_ENV !== "production";
+  const showWork = featured.length > 0 || isDev;
+  const showInsights = insights.length > 0 || isDev;
+
   return (
     <>
       {/* 1. HERO ------------------------------------------------------- */}
@@ -79,7 +87,7 @@ export default function HomePage() {
         <ImageSlot
           src="/assets/images/home-hero.jpg"
           alt="Hyderabad skyline at dawn from a project site"
-          className="absolute inset-0 -z-10 h-full w-full"
+          fill
           priority
         />
         <div
@@ -165,53 +173,55 @@ export default function HomePage() {
       </Section>
 
       {/* 4. SELECTED WORK ----------------------------------------------- */}
-      <Section tone="light">
-        <Reveal>
-          <SectionHead
-            eyebrow="Selected work"
-            title="Projects, and what actually changed"
-            // {{CONFIRM}}
-            lead="Every figure on these pages is one the client has approved for publication. Where a number is missing, it is because we do not yet have permission to show it."
-          />
-        </Reveal>
+      {showWork ? (
+        <Section tone="light">
+          <Reveal>
+            <SectionHead
+              eyebrow="Selected work"
+              title="Projects, and what actually changed"
+              // {{CONFIRM}}
+              lead="Every figure on these pages is one the client has approved for publication. Where a number is missing, it is because we do not yet have permission to show it."
+            />
+          </Reveal>
 
-        {featured.length === 0 ? (
-          <Placeholder label="No case study is cleared for display in this environment.">
-            Allure Avani and Urban Greens need client data. Shangrila Infracon needs written
-            approval and SHOW_SHANGRILA=true.
-          </Placeholder>
-        ) : (
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
-            {featured.map((cs, i) => (
-              <Reveal key={cs.slug} delay={i * 80}>
-                <Link href={`/work/${cs.slug}`} className="group block">
-                  <ImageSlot
-                    src={cs.hero.src}
-                    alt={cs.hero.alt}
-                    className="aspect-[4/5] w-full"
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                  />
-                  <p className="eyebrow mt-5 text-ink-muted">{cs.location}</p>
-                  <h3 className="display mt-2 text-xl group-hover:text-accent-strong">
-                    {cs.project}
-                  </h3>
-                  <p className="copy mt-3 text-ink-muted">{cs.summary}</p>
-                  {cs.status !== "live" ? (
-                    <p className="eyebrow mt-4 text-accent-strong">Draft — not for production</p>
-                  ) : null}
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        )}
+          {featured.length === 0 ? (
+            <Placeholder label="No case study is cleared for display in this environment.">
+              Allure Avani and Urban Greens need client data. Shangrila Infracon needs written
+              approval and SHOW_SHANGRILA=true.
+            </Placeholder>
+          ) : (
+            <div className="mt-14 grid gap-8 md:grid-cols-3">
+              {featured.map((cs, i) => (
+                <Reveal key={cs.slug} delay={i * 80}>
+                  <Link href={`/work/${cs.slug}`} className="group block">
+                    <ImageSlot
+                      src={cs.hero.src}
+                      alt={cs.hero.alt}
+                      className="aspect-[4/5] w-full"
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                    />
+                    <p className="eyebrow mt-5 text-ink-muted">{cs.location}</p>
+                    <h3 className="display mt-2 text-xl group-hover:text-accent-strong">
+                      {cs.project}
+                    </h3>
+                    <p className="copy mt-3 text-ink-muted">{cs.summary}</p>
+                    {cs.status !== "live" ? (
+                      <p className="eyebrow mt-4 text-accent-strong">Draft — not for production</p>
+                    ) : null}
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          )}
 
-        {!flags.showClientLogos ? (
-          <Placeholder label="Client logo wall is switched off.">
-            Only logos supplied and cleared in writing may appear. Set
-            NEXT_PUBLIC_SHOW_CLIENT_LOGOS=true once we hold that permission.
-          </Placeholder>
-        ) : null}
-      </Section>
+          {!flags.showClientLogos ? (
+            <Placeholder label="Client logo wall is switched off.">
+              Only logos supplied and cleared in writing may appear. Set
+              NEXT_PUBLIC_SHOW_CLIENT_LOGOS=true once we hold that permission.
+            </Placeholder>
+          ) : null}
+        </Section>
+      ) : null}
 
       {/* 5. HOW WE WORK -------------------------------------------------- */}
       <Section tone="raised">
@@ -235,44 +245,46 @@ export default function HomePage() {
       </Section>
 
       {/* 6. INSIGHTS PREVIEW --------------------------------------------- */}
-      <Section tone="dark">
-        <Reveal>
-          <SectionHead
-            tone="dark"
-            eyebrow="Insights"
-            title="What we know about land in this market"
-            // {{CONFIRM}}
-            lead="Zones, GOs, patta and ancestral history, ORR and Regional Ring Road exits, verification and registration. We publish the detail because it is the part buyers get wrong."
-          />
-        </Reveal>
-        {insights.length === 0 ? (
-          <Placeholder label="No published Insights articles yet." />
-        ) : (
-          <div className="mt-14 grid gap-px border border-carbon-line bg-carbon-line md:grid-cols-3">
-            {insights.map((a, i) => (
-              <Reveal key={a.slug} delay={i * 70} className="bg-carbon">
-                <Link
-                  href={`/insights/${a.slug}`}
-                  className="group flex h-full flex-col p-8 transition-colors hover:bg-carbon-raised"
-                >
-                  <p className="eyebrow text-accent">{a.topic}</p>
-                  <h3 className="display mt-3 text-lg group-hover:text-accent">{a.title}</h3>
-                  <p className="copy mt-3 flex-1 text-paper-muted">{a.answer}</p>
-                  <p className="mt-5 text-xs text-paper-muted">
-                    {a.draft ? "Draft · " : null}
-                    {a.readingMinutes} min read
-                  </p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        )}
-        <Reveal className="mt-10">
-          <Button href="/insights" variant="secondary">
-            All insights
-          </Button>
-        </Reveal>
-      </Section>
+      {showInsights ? (
+        <Section tone="dark">
+          <Reveal>
+            <SectionHead
+              tone="dark"
+              eyebrow="Insights"
+              title="What we know about land in this market"
+              // {{CONFIRM}}
+              lead="Zones, GOs, patta and ancestral history, ORR and Regional Ring Road exits, verification and registration. We publish the detail because it is the part buyers get wrong."
+            />
+          </Reveal>
+          {insights.length === 0 ? (
+            <Placeholder label="No published Insights articles yet." />
+          ) : (
+            <div className="mt-14 grid gap-px border border-carbon-line bg-carbon-line md:grid-cols-3">
+              {insights.map((a, i) => (
+                <Reveal key={a.slug} delay={i * 70} className="bg-carbon">
+                  <Link
+                    href={`/insights/${a.slug}`}
+                    className="group flex h-full flex-col p-8 transition-colors hover:bg-carbon-raised"
+                  >
+                    <p className="eyebrow text-accent">{a.topic}</p>
+                    <h3 className="display mt-3 text-lg group-hover:text-accent">{a.title}</h3>
+                    <p className="copy mt-3 flex-1 text-paper-muted">{a.answer}</p>
+                    <p className="mt-5 text-xs text-paper-muted">
+                      {a.draft ? "Draft · " : null}
+                      {a.readingMinutes} min read
+                    </p>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          )}
+          <Reveal className="mt-10">
+            <Button href="/insights" variant="secondary">
+              All insights
+            </Button>
+          </Reveal>
+        </Section>
+      ) : null}
 
       {/* 7. CLOSING CTA --------------------------------------------------- */}
       <Section tone="light">

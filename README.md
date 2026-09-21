@@ -107,7 +107,7 @@ Lighthouse on mobile, measured against a production build:
 
 | Page | Performance | Accessibility | Best practices | SEO |
 | --- | --- | --- | --- | --- |
-| Home | 98 | 100 | 100 | 100 |
+| Home | 96 | 100 | 100 | 100 |
 | Contact | 100 | 100 | 100 | 100 |
 | Services detail | 98 | 100 | 100 | 100 |
 | Work | 99 | 100 | 100 | 100 |
