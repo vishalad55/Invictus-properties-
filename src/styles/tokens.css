@@ -1,0 +1,47 @@
+/*
+ * Invictus Properties — design tokens.
+ * Change the brand here and nowhere else.
+ *
+ * {{CONFIRM}} ACCENT COLOUR. Default is warm gold (--accent-gold).
+ * Two alternatives are defined below: --accent-brass and --accent-slate-blue.
+ * To switch, change the value of --accent (and --accent-strong) only.
+ * Do NOT use electric lime — that palette belongs to Shangrila, a client.
+ */
+
+:root {
+  /* Core surfaces */
+  --carbon: #0b0c10;
+  --carbon-raised: #14161c;
+  --carbon-line: #23262f;
+  --offwhite: #f3f4f6;
+  --offwhite-raised: #ffffff;
+  --offwhite-line: #dcdee4;
+
+  /* Text */
+  --text-on-dark: #f3f4f6;
+  --text-on-dark-muted: #a6abb8;
+  --text-on-light: #14161c;
+  --text-on-light-muted: #4d5261;
+
+  /* Accent options — pick one, see note above */
+  --accent-gold: #b8975a;        /* option A (default): warm gold */
+  --accent-brass: #c98a3f;       /* option B: deeper brass/amber */
+  --accent-slate-blue: #6f86a8;  /* option C: cool slate blue */
+
+  --accent: var(--accent-gold);
+  /* Accent tuned for text on light backgrounds so contrast stays WCAG AA. */
+  --accent-strong: #7a6026;
+
+  /* Typography */
+  --font-display: var(--font-display-src), "Arial Black", "Helvetica Neue", sans-serif;
+  --font-body: var(--font-body-src), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Spacing rhythm */
+  --section-y: clamp(4rem, 9vw, 8.5rem);
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --measure: 64ch;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 600ms;
+}
